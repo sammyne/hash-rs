@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":[["CASTAGNOLI",""],["IEEE",""],["KOOPMAN",""],["SIZE",""]],"fn":[["checksum",""],["checksum_ieee",""],["make_table",""],["new",""],["new_ieee",""],["update",""]],"struct":[["Table",""]]};
