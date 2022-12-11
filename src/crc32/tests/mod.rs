@@ -5,9 +5,24 @@ fn golden() {
     golden_ieee(checksum_ieee);
 }
 
+#[test]
+fn simple() {
+    let ieee = simple::make_table(IEEE);
+    golden_ieee(|b: &[u8]| simple::update(0, &ieee, b));
+
+    let castagnoli = simple::make_table(CASTAGNOLI);
+    golden_castagnoli(|b: &[u8]| simple::update(0, &castagnoli, b));
+}
+
+#[test]
+fn table_eq() {
+    let a = simple::make_table(IEEE);
+    assert!(a.eq(&IEEE_TABLE));
+}
+
 struct Test {
     ieee: u32,
-    _castagnoli: u32,
+    castagnoli: u32,
     input: &'static [u8],
     _half_state_ieee: &'static [u8],
     _half_state_castagnoli: &'static [u8],
@@ -16,14 +31,14 @@ struct Test {
 impl Test {
     fn new(
         ieee: u32,
-        _castagnoli: u32,
+        castagnoli: u32,
         input: &'static [u8],
         _half_state_ieee: &'static [u8],
         _half_state_castagnoli: &'static [u8],
     ) -> Self {
         Self {
             ieee,
-            _castagnoli,
+            castagnoli,
             input,
             _half_state_ieee,
             _half_state_castagnoli,
@@ -72,7 +87,28 @@ lazy_static::lazy_static! {
   ];
 }
 
-fn golden_ieee(crc_fn: fn(&[u8]) -> u32) {
+fn golden_castagnoli<F>(crc_fn: F)
+where
+    F: Fn(&[u8]) -> u32,
+{
+    println!("hello");
+    for v in GOLDEN_TEST_VECTOR.iter() {
+        let got = crc_fn(v.input);
+        assert_eq!(
+            v.castagnoli,
+            got,
+            "Castagnoli({}) = {:#08x}, want {:#08x}",
+            String::from_utf8_lossy(v.input),
+            got,
+            v.ieee
+        );
+    }
+}
+
+fn golden_ieee<F>(crc_fn: F)
+where
+    F: Fn(&[u8]) -> u32,
+{
     for v in GOLDEN_TEST_VECTOR.iter() {
         let got = crc_fn(v.input);
         assert_eq!(

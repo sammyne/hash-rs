@@ -2,12 +2,22 @@ use std::ops::{Deref, DerefMut};
 
 pub const IEEE: u32 = 0xedb88320;
 
+pub const CASTAGNOLI: u32 = 0x82f63b78;
+
 pub const SIZE: usize = 4;
 
 lazy_static::lazy_static! {
+
+  static ref  CASTAGNOLI_TABLE: Table = simple::make_table(CASTAGNOLI);
+
+  static ref CASTAGNOLI_TABLE8: Slicing8Table = slicing8::slicing_make_table(CASTAGNOLI);
+
+  static ref IEEE_TABLE: Table = simple::make_table(IEEE);
+
   static ref IEEE_TABLE8: Slicing8Table = slicing8::slicing_make_table(IEEE);
 }
 
+#[derive(PartialEq, Eq, Clone, Copy)]
 pub struct Table(pub [u32; 256]);
 
 impl Default for Table {
@@ -51,13 +61,24 @@ pub fn new_ieee(t: &Table) -> Box<dyn crate::Hash> {
 }
 
 pub fn update(crc: u32, t: &Table, p: &[u8]) -> u32 {
-    todo!()
+    if t.eq(&CASTAGNOLI_TABLE) {
+        update_castagnoli(crc, p)
+    } else if t.eq(&IEEE_TABLE) {
+        update_ieee(crc, p)
+    } else {
+        simple::update(crc, t, p)
+    }
+}
+
+fn update_castagnoli(crc: u32, p: &[u8]) -> u32 {
+    slicing8::slicing_update(crc, &CASTAGNOLI_TABLE8, p)
 }
 
 fn update_ieee(crc: u32, p: &[u8]) -> u32 {
     slicing8::slicing_update(crc, &IEEE_TABLE8, p)
 }
 
+mod simple;
 mod slicing8;
 
 use slicing8::Slicing8Table;

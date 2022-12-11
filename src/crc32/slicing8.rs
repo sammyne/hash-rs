@@ -1,6 +1,6 @@
 use std::ops::{Deref, DerefMut};
 
-use crate::crc32::Table;
+use crate::crc32::{simple, Table};
 
 pub const SLICING8_CUTOFF: usize = 16;
 
@@ -21,32 +21,9 @@ impl DerefMut for Slicing8Table {
     }
 }
 
-pub fn simple_populate_table(poly: u32, t: &mut Table) {
-    for i in 0usize..256 {
-        let mut crc = i as u32;
-        for _j in 0..8 {
-            crc = if (crc & 1) == 1 {
-                (crc >> 1) ^ poly
-            } else {
-                crc >> 1
-            };
-        }
-        t[i] = crc
-    }
-}
-
-pub fn simple_update(crc: u32, t: &Table, p: &[u8]) -> u32 {
-    let mut crc = !crc;
-    for v in p {
-        crc = t[((crc as u8) ^ v) as usize] ^ (crc >> 8);
-    }
-
-    !crc
-}
-
 pub fn slicing_make_table(poly: u32) -> Slicing8Table {
     let mut out = Slicing8Table::default();
-    simple_populate_table(poly, &mut out[0]);
+    simple::populate_table(poly, &mut out[0]);
 
     for i in 0usize..256 {
         let mut crc = out[0][i];
@@ -97,5 +74,5 @@ pub fn slicing_update(crc: u32, t: &Slicing8Table, p: &[u8]) -> u32 {
         return crc;
     }
 
-    simple_update(crc, &t[0], p)
+    simple::update(crc, &t[0], p)
 }
