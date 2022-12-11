@@ -1,8 +1,10 @@
 use std::ops::{Deref, DerefMut};
 
+pub const CASTAGNOLI: u32 = 0x82f63b78;
+
 pub const IEEE: u32 = 0xedb88320;
 
-pub const CASTAGNOLI: u32 = 0x82f63b78;
+pub const KOOPMAN: u32 = 0xeb31d82e;
 
 pub const SIZE: isize = 4;
 

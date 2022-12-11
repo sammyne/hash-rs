@@ -52,6 +52,16 @@ fn slicing() {
 
     let castagnoli = slicing8::make_table(CASTAGNOLI);
     golden_castagnoli(|b: &[u8]| slicing8::update(0, &castagnoli, b));
+
+    for poly in [IEEE, CASTAGNOLI, KOOPMAN, 0xD5828281] {
+        let t1 = simple::make_table(poly);
+        let f1 = |crc: u32, b: &[u8]| -> u32 { simple::update(crc, &t1, b) };
+
+        let t2 = slicing8::make_table(poly);
+        let f2 = |crc: u32, b: &[u8]| -> u32 { slicing8::update(crc, &t2, b) };
+
+        cross_check(f1, f2);
+    }
 }
 
 #[test]
@@ -127,6 +137,28 @@ lazy_static::lazy_static! {
   ];
 }
 
+fn cross_check<F, H>(crc_fn1: F, crc_fn2: H)
+where
+    F: Fn(u32, &[u8]) -> u32,
+    H: Fn(u32, &[u8]) -> u32,
+{
+    let lengths = [
+        0usize, 1, 2, 3, 4, 5, 10, 16, 50, 63, 64, 65, 100, 127, 128, 129, 255, 256, 257, 300, 312,
+        384, 416, 448, 480, 500, 501, 502, 503, 504, 505, 512, 513, 1000, 1024, 2000, 4030, 4031,
+        4032, 4033, 4036, 4040, 4048, 4096, 5000, 10000,
+    ];
+
+    for v in lengths {
+        let mut p = vec![0u8; v];
+        let _ = getrandom::getrandom(&mut p);
+        let crc_init = rand_u32();
+
+        let crc1 = crc_fn1(crc_init, &p);
+        let crc2 = crc_fn2(crc_init, &p);
+        assert_eq!(crc1, crc2, "mismatch for buffer length {}", v);
+    }
+}
+
 fn golden_castagnoli<F>(crc_fn: F)
 where
     F: Fn(&[u8]) -> u32,
@@ -159,4 +191,10 @@ where
             v.ieee
         );
     }
+}
+
+fn rand_u32() -> u32 {
+    let mut b = [0u8; 4];
+    let _ = getrandom::getrandom(&mut b);
+    u32::from_be_bytes(b)
 }
