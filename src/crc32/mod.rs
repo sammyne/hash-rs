@@ -10,11 +10,11 @@ lazy_static::lazy_static! {
 
   static ref  CASTAGNOLI_TABLE: Table = simple::make_table(CASTAGNOLI);
 
-  static ref CASTAGNOLI_TABLE8: Slicing8Table = slicing8::slicing_make_table(CASTAGNOLI);
+  static ref CASTAGNOLI_TABLE8: Slicing8Table = slicing8::make_table(CASTAGNOLI);
 
   static ref IEEE_TABLE: Table = simple::make_table(IEEE);
 
-  static ref IEEE_TABLE8: Slicing8Table = slicing8::slicing_make_table(IEEE);
+  static ref IEEE_TABLE8: Slicing8Table = slicing8::make_table(IEEE);
 }
 
 #[derive(PartialEq, Eq, Clone, Copy)]
@@ -71,11 +71,11 @@ pub fn update(crc: u32, t: &Table, p: &[u8]) -> u32 {
 }
 
 fn update_castagnoli(crc: u32, p: &[u8]) -> u32 {
-    slicing8::slicing_update(crc, &CASTAGNOLI_TABLE8, p)
+    slicing8::update(crc, &CASTAGNOLI_TABLE8, p)
 }
 
 fn update_ieee(crc: u32, p: &[u8]) -> u32 {
-    slicing8::slicing_update(crc, &IEEE_TABLE8, p)
+    slicing8::update(crc, &IEEE_TABLE8, p)
 }
 
 mod simple;

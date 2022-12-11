@@ -21,7 +21,7 @@ impl DerefMut for Slicing8Table {
     }
 }
 
-pub fn slicing_make_table(poly: u32) -> Slicing8Table {
+pub fn make_table(poly: u32) -> Slicing8Table {
     let mut out = Slicing8Table::default();
     simple::populate_table(poly, &mut out[0]);
 
@@ -49,7 +49,7 @@ pub fn slicing_make_table(poly: u32) -> Slicing8Table {
     out
 }
 
-pub fn slicing_update(crc: u32, t: &Slicing8Table, p: &[u8]) -> u32 {
+pub fn update(crc: u32, t: &Slicing8Table, p: &[u8]) -> u32 {
     let (mut crc, mut p) = (crc, p);
     if p.len() >= SLICING8_CUTOFF {
         crc = !crc;

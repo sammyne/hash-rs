@@ -15,6 +15,15 @@ fn simple() {
 }
 
 #[test]
+fn slicing() {
+    let ieee = slicing8::make_table(IEEE);
+    golden_ieee(|b: &[u8]| slicing8::update(0, &ieee, b));
+
+    let castagnoli = slicing8::make_table(CASTAGNOLI);
+    golden_castagnoli(|b: &[u8]| slicing8::update(0, &castagnoli, b));
+}
+
+#[test]
 fn table_eq() {
     let a = simple::make_table(IEEE);
     assert!(a.eq(&IEEE_TABLE));
