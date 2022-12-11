@@ -1,11 +1,11 @@
 use std::io::Write;
 
 pub trait Hash: Write {
-    fn sum(&mut self, b: &[u8]) -> Vec<u8>;
+    fn sum(&mut self, b: Option<Vec<u8>>) -> Vec<u8>;
 
     fn reset(&mut self);
 
-    fn size(&self);
+    fn size(&self) -> isize;
 
     fn block_size(&self) -> isize;
 }

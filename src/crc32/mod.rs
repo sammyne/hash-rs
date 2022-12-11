@@ -4,7 +4,7 @@ pub const IEEE: u32 = 0xedb88320;
 
 pub const CASTAGNOLI: u32 = 0x82f63b78;
 
-pub const SIZE: usize = 4;
+pub const SIZE: isize = 4;
 
 lazy_static::lazy_static! {
 
@@ -41,7 +41,7 @@ impl DerefMut for Table {
 }
 
 pub fn checksum(data: &[u8], table: &Table) -> u32 {
-    todo!()
+    update(0, table, data)
 }
 
 pub fn checksum_ieee(data: &[u8]) -> u32 {
@@ -49,15 +49,19 @@ pub fn checksum_ieee(data: &[u8]) -> u32 {
 }
 
 pub fn make_table(poly: u32) -> Table {
-    todo!()
+    match poly {
+        IEEE => *IEEE_TABLE,
+        CASTAGNOLI => *CASTAGNOLI_TABLE,
+        _ => simple::make_table(poly),
+    }
 }
 
-pub fn new(t: &Table) -> Box<dyn crate::Hash> {
-    todo!()
+pub fn new(t: Table) -> Box<dyn crate::Hash32> {
+    Box::new(Digest::new(0, t))
 }
 
-pub fn new_ieee(t: &Table) -> Box<dyn crate::Hash> {
-    todo!()
+pub fn new_ieee() -> Box<dyn crate::Hash32> {
+    new(*IEEE_TABLE)
 }
 
 pub fn update(crc: u32, t: &Table, p: &[u8]) -> u32 {
@@ -78,9 +82,11 @@ fn update_ieee(crc: u32, p: &[u8]) -> u32 {
     slicing8::update(crc, &IEEE_TABLE8, p)
 }
 
+mod digest;
 mod simple;
 mod slicing8;
 
+use digest::Digest;
 use slicing8::Slicing8Table;
 
 #[cfg(test)]

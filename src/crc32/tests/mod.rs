@@ -3,6 +3,37 @@ use super::*;
 #[test]
 fn golden() {
     golden_ieee(checksum_ieee);
+
+    for delta in 1..=7 {
+        let f = |b: &[u8]| -> u32 {
+            let mut ieee = new_ieee();
+            let d = b.len().min(delta as usize);
+            let _ = ieee.write(&b[..d]);
+            let _ = ieee.write(&b[d..]);
+            ieee.sum32()
+        };
+        golden_ieee(f);
+    }
+
+    let castagnoli_table = make_table(CASTAGNOLI);
+
+    let f = |b: &[u8]| -> u32 {
+        let mut c = new(castagnoli_table);
+        let _ = c.write(b);
+        c.sum32()
+    };
+    golden_castagnoli(f);
+
+    for delta in 1..=7 {
+        let f = |b: &[u8]| -> u32 {
+            let mut c = new(castagnoli_table);
+            let d = b.len().min(delta as usize);
+            let _ = c.write(&b[..d]);
+            let _ = c.write(&b[d..]);
+            c.sum32()
+        };
+        golden_castagnoli(f);
+    }
 }
 
 #[test]
@@ -100,7 +131,6 @@ fn golden_castagnoli<F>(crc_fn: F)
 where
     F: Fn(&[u8]) -> u32,
 {
-    println!("hello");
     for v in GOLDEN_TEST_VECTOR.iter() {
         let got = crc_fn(v.input);
         assert_eq!(
