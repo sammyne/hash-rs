@@ -93,28 +93,83 @@
 <span id="93">93</span>
 <span id="94">94</span>
 <span id="95">95</span>
-</pre><pre class="rust"><code><span class="kw">use </span>std::ops::{Deref, DerefMut};
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Module crc32 implements the 32-bit cyclic redundancy check, or CRC-32, checksum.
+//!
+//! See &lt;https://en.wikipedia.org/wiki/Cyclic_redundancy_check&gt; for information.
+//!
+//! Polynomials are represented in LSB-first form also known as reversed representation.
+//!
+//! See &lt;https://en.wikipedia.org/wiki/Mathematics_of_cyclic_redundancy_checks#Reversed_representations_and_reciprocal_polynomials&gt; for information.
+//!
+</span><span class="kw">use </span>std::ops::{Deref, DerefMut};
 
-<span class="kw">pub const </span>CASTAGNOLI: u32 = <span class="number">0x82f63b78</span>;
+<span class="doccomment">/// Castagnoli&#39;s polynomial, used in iSCSI.
+/// Has better error detection characteristics than IEEE.
+/// &lt;https://dx.doi.org/10.1109/26.231911&gt;
+</span><span class="kw">pub const </span>CASTAGNOLI: u32 = <span class="number">0x82f63b78</span>;
 
-<span class="kw">pub const </span>IEEE: u32 = <span class="number">0xedb88320</span>;
+<span class="doccomment">/// IEEE is by far and away the most common CRC-32 polynomial.
+/// Used by ethernet (IEEE 802.3), v.42, fddi, gzip, zip, png, ...
+</span><span class="kw">pub const </span>IEEE: u32 = <span class="number">0xedb88320</span>;
 
-<span class="kw">pub const </span>KOOPMAN: u32 = <span class="number">0xeb31d82e</span>;
+<span class="doccomment">/// Koopman&#39;s polynomial.
+/// Also has better error detection characteristics than IEEE.
+/// &lt;https://dx.doi.org/10.1109/DSN.2002.1028931&gt;
+</span><span class="kw">pub const </span>KOOPMAN: u32 = <span class="number">0xeb31d82e</span>;
 
-<span class="kw">pub const </span>SIZE: isize = <span class="number">4</span>;
+<span class="doccomment">/// The size of a CRC-32 checksum in bytes.
+</span><span class="kw">pub const </span>SIZE: isize = <span class="number">4</span>;
 
 <span class="macro">lazy_static::lazy_static! </span>{
+
+  <span class="doccomment">/// IEEE_TABLE is the table for the IEEE polynomial.
+  </span><span class="kw">pub static </span><span class="kw-2">ref </span>IEEE_TABLE: Table = simple::make_table(IEEE);
 
   <span class="kw">static </span><span class="kw-2">ref  </span>CASTAGNOLI_TABLE: Table = simple::make_table(CASTAGNOLI);
 
   <span class="kw">static </span><span class="kw-2">ref </span>CASTAGNOLI_TABLE8: Slicing8Table = slicing8::make_table(CASTAGNOLI);
 
-  <span class="kw">static </span><span class="kw-2">ref </span>IEEE_TABLE: Table = simple::make_table(IEEE);
 
   <span class="kw">static </span><span class="kw-2">ref </span>IEEE_TABLE8: Slicing8Table = slicing8::make_table(IEEE);
 }
 
-<span class="attribute">#[derive(PartialEq, Eq, Clone, Copy)]
+<span class="doccomment">/// Table is a 256-word table representing the polynomial for efficient processing.
+</span><span class="attribute">#[derive(PartialEq, Eq, Clone, Copy)]
 </span><span class="kw">pub struct </span>Table(<span class="kw">pub </span>[u32; <span class="number">256</span>]);
 
 <span class="kw">impl </span>Default <span class="kw">for </span>Table {
@@ -137,15 +192,25 @@
     </span>}
 }
 
-<span class="kw">pub fn </span>checksum(data: <span class="kw-2">&amp;</span>[u8], table: <span class="kw-2">&amp;</span>Table) -&gt; u32 {
+<span class="doccomment">/// checksum returns the CRC-32 checksum of data using the polynomial represented by the Table.
+</span><span class="kw">pub fn </span>checksum(data: <span class="kw-2">&amp;</span>[u8], table: <span class="kw-2">&amp;</span>Table) -&gt; u32 {
     update(<span class="number">0</span>, table, data)
 }
 
-<span class="kw">pub fn </span>checksum_ieee(data: <span class="kw-2">&amp;</span>[u8]) -&gt; u32 {
+<span class="doccomment">/// checksum_ieee returns the CRC-32 checksum of data using the IEEE polynomial.
+</span><span class="kw">pub fn </span>checksum_ieee(data: <span class="kw-2">&amp;</span>[u8]) -&gt; u32 {
     update_ieee(<span class="number">0</span>, data)
 }
 
-<span class="kw">pub fn </span>make_table(poly: u32) -&gt; Table {
+<span class="doccomment">/// make_table returns a Table constructed from the specified polynomial. The contents of this Table must not be
+/// modified.
+/// 
+/// # Example
+/// ```
+</span><span class="attribute">#[doc = <span class="macro">include_str!</span>(<span class="string">&quot;../../examples/crc32_make_table.rs&quot;</span>)]
+</span><span class="doccomment">/// ```
+///
+</span><span class="kw">pub fn </span>make_table(poly: u32) -&gt; Table {
     <span class="kw">match </span>poly {
         IEEE =&gt; <span class="kw-2">*</span>IEEE_TABLE,
         CASTAGNOLI =&gt; <span class="kw-2">*</span>CASTAGNOLI_TABLE,
@@ -153,15 +218,20 @@
     }
 }
 
-<span class="kw">pub fn </span>new(t: Table) -&gt; Box&lt;<span class="kw">dyn </span><span class="kw">crate</span>::Hash32&gt; {
+<span class="doccomment">/// new creates a new [`Hash32`](crate::Hash32) computing the CRC-32 checksum using the polynomial represented by the Table. Its
+/// [`sum`](crate::Hash::sum) method will lay the value out in big-endian byte order.
+</span><span class="kw">pub fn </span>new(t: Table) -&gt; Box&lt;<span class="kw">dyn </span><span class="kw">crate</span>::Hash32&gt; {
     Box::new(Digest::new(<span class="number">0</span>, t))
 }
 
-<span class="kw">pub fn </span>new_ieee() -&gt; Box&lt;<span class="kw">dyn </span><span class="kw">crate</span>::Hash32&gt; {
+<span class="doccomment">/// new_ieee creates a new [`Hash32`](crate::Hash32) computing the CRC-32 checksum using the IEEE polynomial. Its 
+/// [`sum`](crate::Hash::sum) method will lay the value out in big-endian byte order.
+</span><span class="kw">pub fn </span>new_ieee() -&gt; Box&lt;<span class="kw">dyn </span><span class="kw">crate</span>::Hash32&gt; {
     new(<span class="kw-2">*</span>IEEE_TABLE)
 }
 
-<span class="kw">pub fn </span>update(crc: u32, t: <span class="kw-2">&amp;</span>Table, p: <span class="kw-2">&amp;</span>[u8]) -&gt; u32 {
+<span class="doccomment">/// update returns the result of adding the bytes in p to the crc.
+</span><span class="kw">pub fn </span>update(crc: u32, t: <span class="kw-2">&amp;</span>Table, p: <span class="kw-2">&amp;</span>[u8]) -&gt; u32 {
     <span class="kw">if </span>t.eq(<span class="kw-2">&amp;</span>CASTAGNOLI_TABLE) {
         update_castagnoli(crc, p)
     } <span class="kw">else if </span>t.eq(<span class="kw-2">&amp;</span>IEEE_TABLE) {

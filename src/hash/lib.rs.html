@@ -19,23 +19,57 @@
 <span id="19">19</span>
 <span id="20">20</span>
 <span id="21">21</span>
-</pre><pre class="rust"><code><span class="kw">use </span>std::io::Write;
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Crate hash provides interfaces for hash functions.
+//!
 
-<span class="kw">pub trait </span>Hash: Write {
-    <span class="kw">fn </span>sum(<span class="kw-2">&amp;mut </span><span class="self">self</span>, b: <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;) -&gt; Vec&lt;u8&gt;;
+</span><span class="kw">use </span>std::io::Write;
 
-    <span class="kw">fn </span>reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+<span class="doccomment">/// Hash is the common interface implemented by all hash functions.
+///
+/// [`std::io::Write`] trait requirement adds more data to the running hash.
+/// It never returns an error.
+</span><span class="kw">pub trait </span>Hash: Write {
+    <span class="doccomment">/// sum appends the current hash to b and returns the resulting slice.
+    /// It does not change the underlying hash state.
+    </span><span class="kw">fn </span>sum(<span class="kw-2">&amp;mut </span><span class="self">self</span>, b: <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;) -&gt; Vec&lt;u8&gt;;
 
-    <span class="kw">fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; isize;
+    <span class="doccomment">/// reset resets the Hash to its initial state.
+    </span><span class="kw">fn </span>reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
 
-    <span class="kw">fn </span>block_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; isize;
+    <span class="doccomment">/// size returns the number of bytes Sum will return.
+    </span><span class="kw">fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; isize;
+
+    <span class="doccomment">/// block_size returns the hash&#39;s underlying block size.
+    /// The write method must be able to accept any amount
+    /// of data, but it may operate more efficiently if all writes
+    /// are a multiple of the block size.
+    </span><span class="kw">fn </span>block_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; isize;
 }
 
-<span class="kw">pub trait </span>Hash32: Hash {
+<span class="doccomment">/// Hash32 is the common interface implemented by all 32-bit hash functions.
+</span><span class="kw">pub trait </span>Hash32: Hash {
     <span class="kw">fn </span>sum32(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; u32;
 }
 
-<span class="kw">pub trait </span>Hash64: Hash {
+<span class="doccomment">/// Hash64 is the common interface implemented by all 64-bit hash functions.
+</span><span class="kw">pub trait </span>Hash64: Hash {
     <span class="kw">fn </span>sum64(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; u64;
 }
 
