@@ -1,7 +1,7 @@
 # hash
 
 ![build status](https://github.com/sammyne/hash-rs/workflows/build/badge.svg)
-[![docs badge](https://img.shields.io/badge/docs-0.1.0-blue)][doc-page]
+[![docs badge](https://img.shields.io/badge/docs-0.2.0-blue)][doc-page]
 ![minimum rustc](https://img.shields.io/badge/rustc-1.65.0%2B-blue)
 
 This repository tries to implement a Go-like hash library in Rust.
