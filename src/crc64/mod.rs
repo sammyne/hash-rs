@@ -1,11 +1,19 @@
+//! Module crc64 implements the 64-bit cyclic redundancy check, or CRC-64, checksum.
+//! 
+//! See <https://en.wikipedia.org/wiki/Cyclic_redundancy_check> for information.
+//! 
+
 use std::ops::{Deref, DerefMut};
 
 use crate::Hash64;
 
+/// The ECMA polynomial, defined in ECMA 182.
 pub const ECMA: u64 = 0xC96C5795D7870F42;
 
+/// The ISO polynomial, defined in ISO 3309 and used in HDLC.
 pub const ISO: u64 = 0xD800000000000000;
 
+/// The size of a CRC-64 checksum in bytes.
 pub const SIZE: isize = 8;
 
 lazy_static::lazy_static! {
@@ -14,6 +22,7 @@ lazy_static::lazy_static! {
     static ref SLICING8_TABLE_ISO: [Table;8] = slicing8::make_table(Table::from_poly(ISO)) ;
 }
 
+/// Table is a 256-word table representing the polynomial for efficient processing.
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub struct Table(pub [u64; 256]);
 
@@ -57,10 +66,13 @@ impl DerefMut for Table {
     }
 }
 
+/// checksum returns the CRC-64 checksum of data using the polynomial represented by the [Table].
 pub fn checksum(data: &[u8], table: &Table) -> u64 {
     update(0, table, data)
 }
 
+/// make_table returns a [Table] constructed from the specified polynomial. The contents of this Table must not be
+/// modified.
 pub fn make_table(poly: u64) -> Table {
     match poly {
         ISO => SLICING8_TABLE_ISO[0],
@@ -69,10 +81,13 @@ pub fn make_table(poly: u64) -> Table {
     }
 }
 
+/// new creates a new [hash::Hash64][crate::Hash] computing the CRC-64 checksum using the polynomial represented by the
+/// [Table]. Its [sum](crate::Hash::sum) method will lay the value out in big-endian byte order.
 pub fn new(table: Table) -> Box<dyn Hash64> {
     Box::new(digest::Digest::new(0, table))
 }
 
+/// update returns the result of adding the bytes in p to the crc.
 pub fn update(crc: u64, table: &Table, p: &[u8]) -> u64 {
     let mut crc = !crc;
 

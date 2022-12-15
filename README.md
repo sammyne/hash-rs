@@ -10,9 +10,8 @@ This repository tries to implement a Go-like hash library in Rust.
 
 Supported hashes go as follow
 
-| scheme                  | implementation          |
-| ----------------------- | ----------------------- |
-| [crc32][crc32-doc-page] | :ballot_box_with_check: |
+- [x] [crc32][crc32-doc-page]
+- [x] [crc64][crc64-doc-page]
 
 ## Reference
 
@@ -20,3 +19,4 @@ Supported hashes go as follow
 
 [doc-page]: https://sammyne.github.io/hash-rs/hash/
 [crc32-doc-page]: https://sammyne.github.io/hash-rs/hash/crc32/
+[crc64-doc-page]: https://sammyne.github.io/hash-rs/hash/crc64/
