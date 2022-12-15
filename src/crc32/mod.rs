@@ -74,7 +74,7 @@ pub fn checksum_ieee(data: &[u8]) -> u32 {
 
 /// make_table returns a Table constructed from the specified polynomial. The contents of this Table must not be
 /// modified.
-/// 
+///
 /// # Example
 /// ```
 #[doc = include_str!("../../examples/crc32_make_table.rs")]
@@ -94,7 +94,7 @@ pub fn new(t: Table) -> Box<dyn crate::Hash32> {
     Box::new(Digest::new(0, t))
 }
 
-/// new_ieee creates a new [`Hash32`](crate::Hash32) computing the CRC-32 checksum using the IEEE polynomial. Its 
+/// new_ieee creates a new [`Hash32`](crate::Hash32) computing the CRC-32 checksum using the IEEE polynomial. Its
 /// [`sum`](crate::Hash::sum) method will lay the value out in big-endian byte order.
 pub fn new_ieee() -> Box<dyn crate::Hash32> {
     new(*IEEE_TABLE)

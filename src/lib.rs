@@ -36,3 +36,5 @@ pub trait Hash64: Hash {
 }
 
 pub mod crc32;
+
+pub mod crc64;
