@@ -138,6 +138,11 @@
 <span id="138">138</span>
 <span id="139">139</span>
 <span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Module crc64 implements the 64-bit cyclic redundancy check, or CRC-64, checksum.
 //! 
 //! See &lt;https://en.wikipedia.org/wiki/Cyclic_redundancy_check&gt; for information.
@@ -207,6 +212,11 @@
 }
 
 <span class="doccomment">/// checksum returns the CRC-64 checksum of data using the polynomial represented by the [Table].
+/// 
+/// # Example
+/// ```
+</span><span class="attribute">#[doc = <span class="macro">include_str!</span>(<span class="string">&quot;../../examples/crc64_checksum.rs&quot;</span>)]
+</span><span class="doccomment">/// ```
 </span><span class="kw">pub fn </span>checksum(data: <span class="kw-2">&amp;</span>[u8], table: <span class="kw-2">&amp;</span>Table) -&gt; u64 {
     update(<span class="number">0</span>, table, data)
 }
