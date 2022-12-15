@@ -67,6 +67,11 @@ impl DerefMut for Table {
 }
 
 /// checksum returns the CRC-64 checksum of data using the polynomial represented by the [Table].
+/// 
+/// # Example
+/// ```
+#[doc = include_str!("../../examples/crc64_checksum.rs")]
+/// ```
 pub fn checksum(data: &[u8], table: &Table) -> u64 {
     update(0, table, data)
 }
