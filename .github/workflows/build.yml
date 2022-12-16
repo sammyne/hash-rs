@@ -41,15 +41,3 @@ jobs:
     - name: Run tests
       run: cargo test
       shell: bash
-    - name: Generate docs
-      run: cargo doc --no-deps --all-features
-    - name: Install rsync for JamesIves/github-pages-deploy-action@releases/v4
-      run: apt update && apt install -y rsync
-    # https://github.blog/2022-04-12-git-security-vulnerability-announced/#cve-2022-24765
-    - name: Fix git CVE-2022-24765
-      run: git config --global --add safe.directory $GITHUB_WORKSPACE
-    - name: Deploy docs
-      uses: JamesIves/github-pages-deploy-action@releases/v4
-      with:
-        branch: gh-pages
-        folder: target/doc
