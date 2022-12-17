@@ -35,6 +35,8 @@ pub trait Hash64: Hash {
     fn sum64(&mut self) -> u64;
 }
 
+pub mod adler32;
+
 pub mod crc32;
 
 pub mod crc64;
