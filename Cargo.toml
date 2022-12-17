@@ -7,6 +7,16 @@ edition = "2021"
 
 [dependencies]
 lazy_static = "1.4.0"
+rand = "0.8.5"
+
+[dependencies.getrandom]
+optional = true
+version = "0.2.8"
 
 [dev-dependencies]
 getrandom = "0.2.8"
+rand = "0.8.5"
+
+[features]
+default = ["maphash"]
+maphash = ["getrandom"]
