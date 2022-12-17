@@ -1,10 +1,10 @@
 use crate::{Hash, Hash32, Hash64};
 
-/*
 pub fn new128() -> impl Hash {
-    todo!()
+  Sum128::new()
 }
 
+/*
 pub fn new128a() -> impl Hash {
     todo!()
 }
@@ -15,31 +15,33 @@ pub fn new32() -> impl Hash32 {
 }
 
 pub fn new32a() -> impl Hash32 {
-  Sum32a::new()
+    Sum32a::new()
 }
 
 pub fn new64() -> impl Hash64 {
-  Sum64::new()
+    Sum64::new()
 }
 
 pub fn new64a() -> impl Hash64 {
-  Sum64a::new()
+    Sum64a::new()
 }
 
 const OFFSET32: u32 = 2166136261;
 const OFFSET64: u64 = 14695981039346656037;
-const OFFSET128_LOWER: usize = 0x62b821756295c58d;
-const OFFSET128_HIGHER: usize = 0x6c62272e07bb0142;
+const OFFSET128_LOWER: u64 = 0x62b821756295c58d;
+const OFFSET128_HIGHER: u64 = 0x6c62272e07bb0142;
 const PRIME32: u32 = 16777619;
 const PRIME64: u64 = 1099511628211;
-const PRIME128_LOWER: usize = 0x13b;
-const PRIME128_SHIFT: usize = 24;
+const PRIME128_LOWER: u128 = 0x013b;
+const PRIME128_SHIFT: u32 = 24;
 
+mod sum128;
 mod sum32;
 mod sum32a;
 mod sum64;
 mod sum64a;
 
+use sum128::Sum128;
 use sum32::Sum32;
 use sum32a::Sum32a;
 use sum64::Sum64;
