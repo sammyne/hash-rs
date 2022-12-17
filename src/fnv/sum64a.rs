@@ -28,7 +28,7 @@ impl Hash for Sum64a {
     }
 
     fn size(&self) -> isize {
-       8 
+        8
     }
 
     fn block_size(&self) -> isize {

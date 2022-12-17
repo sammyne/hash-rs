@@ -6,6 +6,11 @@ fn golden128() {
 }
 
 #[test]
+fn golden128a() {
+    test_golden(super::new128a(), GOLDEN128A_TEST_VECTOR.as_slice());
+}
+
+#[test]
 fn golden32() {
     test_golden(super::new32(), GOLDEN32_TEST_VECTOR.as_slice());
 }
@@ -28,6 +33,11 @@ fn golden64a() {
 #[test]
 fn integrity128() {
     test_integrity(super::new128());
+}
+
+#[test]
+fn integrity128a() {
+    test_integrity(super::new128a());
 }
 
 #[test]
