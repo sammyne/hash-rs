@@ -1,14 +1,12 @@
 use crate::{Hash, Hash32, Hash64};
 
 pub fn new128() -> impl Hash {
-  Sum128::new()
+    Sum128::new()
 }
 
-/*
 pub fn new128a() -> impl Hash {
-    todo!()
+    Sum128a::new()
 }
-*/
 
 pub fn new32() -> impl Hash32 {
     Sum32::new()
@@ -36,12 +34,14 @@ const PRIME128_LOWER: u128 = 0x013b;
 const PRIME128_SHIFT: u32 = 24;
 
 mod sum128;
+mod sum128a;
 mod sum32;
 mod sum32a;
 mod sum64;
 mod sum64a;
 
 use sum128::Sum128;
+use sum128a::Sum128a;
 use sum32::Sum32;
 use sum32a::Sum32a;
 use sum64::Sum64;
