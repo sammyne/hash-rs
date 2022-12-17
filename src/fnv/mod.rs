@@ -18,11 +18,11 @@ pub fn new32a() -> impl Hash32 {
   Sum32a::new()
 }
 
-/*
 pub fn new64() -> impl Hash64 {
-    todo!()
+  Sum64::new()
 }
 
+/*
 pub fn new64a() -> impl Hash64 {
     todo!()
 }
@@ -39,9 +39,11 @@ const PRIME128_SHIFT: usize = 24;
 
 mod sum32;
 mod sum32a;
+mod sum64;
 
 use sum32::Sum32;
 use sum32a::Sum32a;
+use sum64::Sum64;
 
 #[cfg(test)]
 mod tests;
