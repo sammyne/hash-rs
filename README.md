@@ -12,6 +12,9 @@ Supported hashes go as follow
 
 - [x] [crc32][crc32-doc-page]
 - [x] [crc64][crc64-doc-page]
+- [ ] adler32
+- [ ] fnv
+- [ ] maphash
 
 ## Reference
 
