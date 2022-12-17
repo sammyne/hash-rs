@@ -1,6 +1,11 @@
 use crate::{Hash, Hash32, Hash64};
 
 #[test]
+fn golden128() {
+    test_golden(super::new128(), GOLDEN128_TEST_VECTOR.as_slice());
+}
+
+#[test]
 fn golden32() {
     test_golden(super::new32(), GOLDEN32_TEST_VECTOR.as_slice());
 }
@@ -18,6 +23,11 @@ fn golden64() {
 #[test]
 fn golden64a() {
     test_golden(super::new64a(), GOLDEN64A_TEST_VECTOR.as_slice());
+}
+
+#[test]
+fn integrity128() {
+    test_integrity(super::new128());
 }
 
 #[test]
@@ -45,7 +55,7 @@ where
     H: Hash,
 {
     let mut h = h;
-    for g in test_vector {
+    for g in test_vector.iter().skip(1) {
         h.reset();
 
         let done = h.write(g.input.as_bytes()).expect("write");
