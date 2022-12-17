@@ -22,11 +22,9 @@ pub fn new64() -> impl Hash64 {
   Sum64::new()
 }
 
-/*
 pub fn new64a() -> impl Hash64 {
-    todo!()
+  Sum64a::new()
 }
-*/
 
 const OFFSET32: u32 = 2166136261;
 const OFFSET64: u64 = 14695981039346656037;
@@ -40,10 +38,12 @@ const PRIME128_SHIFT: usize = 24;
 mod sum32;
 mod sum32a;
 mod sum64;
+mod sum64a;
 
 use sum32::Sum32;
 use sum32a::Sum32a;
 use sum64::Sum64;
+use sum64a::Sum64a;
 
 #[cfg(test)]
 mod tests;
