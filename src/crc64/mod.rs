@@ -1,7 +1,7 @@
 //! Module crc64 implements the 64-bit cyclic redundancy check, or CRC-64, checksum.
-//! 
+//!
 //! See <https://en.wikipedia.org/wiki/Cyclic_redundancy_check> for information.
-//! 
+//!
 
 use std::ops::{Deref, DerefMut};
 
@@ -67,7 +67,7 @@ impl DerefMut for Table {
 }
 
 /// checksum returns the CRC-64 checksum of data using the polynomial represented by the [Table].
-/// 
+///
 /// # Example
 /// ```
 #[doc = include_str!("../../examples/crc64_checksum.rs")]
@@ -82,7 +82,7 @@ pub fn make_table(poly: u64) -> Table {
     match poly {
         ISO => SLICING8_TABLE_ISO[0],
         ECMA => SLICING8_TABLE_ECMA[0],
-        _ => Table::from_poly(poly)
+        _ => Table::from_poly(poly),
     }
 }
 
