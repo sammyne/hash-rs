@@ -42,3 +42,6 @@ pub mod crc32;
 pub mod crc64;
 
 pub mod fnv;
+
+#[cfg(feature = "maphash")]
+pub mod maphash;
