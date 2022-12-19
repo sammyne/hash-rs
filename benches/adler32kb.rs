@@ -16,14 +16,21 @@ fn benchmark(c: &mut Criterion) {
     let mut h = adler32::new();
     let input = vec![0u8; h.size() as usize];
 
+    // it seems overhead of setup is neglectable.
+    let mut f = |v: Option<Vec<u8>>| {
+        h.reset();
+        let _ = h.write(&data).expect("write");
+        h.sum(v);
+    };
+
     let mut grp = c.benchmark_group("adler32");
     grp.throughput(Throughput::Bytes((data.len() + input.len()) as u64));
     grp.bench_function("adler32kb", |b| {
-        b.iter(|| {
-            h.reset();
-            let _ = h.write(&data).expect("write");
-            h.sum(Some(input.clone()));
-        })
+        b.iter_batched(
+            || Some(input.clone()),
+            |v| f(v),
+            criterion::BatchSize::SmallInput,
+        );
     });
     grp.finish();
 }
