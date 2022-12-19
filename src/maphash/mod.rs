@@ -54,7 +54,7 @@ pub struct Hash {
 
 /// A Seed is a random value that selects the specific hash function
 /// computed by a [Hash][struct@Hash].
-/// 
+///
 /// If two Hashes use the same Seeds, they
 /// will compute the same hash values for any given input.
 /// If two Hashes use different Seeds, they are very likely to compute
@@ -210,7 +210,7 @@ impl Write for Hash {
 }
 
 impl Seed {
-    /// new makes a random seed. 
+    /// new makes a random seed.
     pub fn new() -> Seed {
         let mut s = 0u64;
         while s == 0 {
