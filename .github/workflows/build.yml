@@ -10,6 +10,7 @@ on:
     - 'examples/**'
     - 'src/**'
     - 'tests/**'
+    - Cargo.toml
 
 jobs:
   test:
