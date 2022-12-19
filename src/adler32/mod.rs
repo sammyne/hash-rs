@@ -17,7 +17,7 @@ use std::io::Write;
 use crate::{Hash, Hash32};
 
 /// The size of an Adler-32 checksum in bytes.
-pub const SIZE: isize = 4;
+pub const SIZE: usize = 4;
 
 /// MODULO is the largest prime that is less than 65536.
 const MODULO: u32 = 65521;
@@ -66,7 +66,7 @@ impl Hash for Digest {
         self.0 = 1;
     }
 
-    fn size(&self) -> isize {
+    fn size(&self) -> usize {
         crate::adler32::SIZE
     }
 

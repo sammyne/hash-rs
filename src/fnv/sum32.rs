@@ -27,7 +27,7 @@ impl Hash for Sum32 {
         self.0 = OFFSET32;
     }
 
-    fn size(&self) -> isize {
+    fn size(&self) -> usize {
         4
     }
 

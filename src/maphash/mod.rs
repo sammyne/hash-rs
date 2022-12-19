@@ -144,7 +144,7 @@ impl crate::Hash for Hash {
     }
 
     /// size returns h's hash value size, 8 bytes.
-    fn size(&self) -> isize {
+    fn size(&self) -> usize {
         8
     }
 

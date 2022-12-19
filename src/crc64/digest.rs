@@ -42,7 +42,7 @@ impl Hash for Digest {
         self.crc = 0;
     }
 
-    fn size(&self) -> isize {
+    fn size(&self) -> usize {
         SIZE
     }
 

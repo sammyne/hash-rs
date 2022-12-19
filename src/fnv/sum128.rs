@@ -31,7 +31,7 @@ impl Hash for Sum128 {
         self.1 = OFFSET128_LOWER;
     }
 
-    fn size(&self) -> isize {
+    fn size(&self) -> usize {
         16
     }
 
