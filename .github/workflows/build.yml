@@ -16,7 +16,7 @@ jobs:
 
     runs-on: ubuntu-latest
     container: 
-      image: rust:1.65.0
+      image: rust:1.65.0-bullseye
 
     steps:
     - uses: actions/checkout@v3
