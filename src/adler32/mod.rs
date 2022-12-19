@@ -40,7 +40,7 @@ pub fn new() -> impl Hash32 {
 
 /// digest represents the partial evaluation of a checksum.
 /// The low 16 bits are s1, the high 16 bits are s2.
-pub struct Digest(u32);
+struct Digest(u32);
 
 impl Digest {
     fn new() -> Self {
