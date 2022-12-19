@@ -319,7 +319,7 @@
 
 <span class="doccomment">/// A Seed is a random value that selects the specific hash function
 /// computed by a [Hash][struct@Hash].
-/// 
+///
 /// If two Hashes use the same Seeds, they
 /// will compute the same hash values for any given input.
 /// If two Hashes use different Seeds, they are very likely to compute
@@ -475,7 +475,7 @@
 }
 
 <span class="kw">impl </span>Seed {
-    <span class="doccomment">/// new makes a random seed. 
+    <span class="doccomment">/// new makes a random seed.
     </span><span class="kw">pub fn </span>new() -&gt; Seed {
         <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="number">0u64</span>;
         <span class="kw">while </span>s == <span class="number">0 </span>{
