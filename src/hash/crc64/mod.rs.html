@@ -159,7 +159,7 @@
 </span><span class="kw">pub const </span>ISO: u64 = <span class="number">0xD800000000000000</span>;
 
 <span class="doccomment">/// The size of a CRC-64 checksum in bytes.
-</span><span class="kw">pub const </span>SIZE: isize = <span class="number">8</span>;
+</span><span class="kw">pub const </span>SIZE: usize = <span class="number">8</span>;
 
 <span class="macro">lazy_static::lazy_static! </span>{
     <span class="kw">static </span><span class="kw-2">ref </span>SLICING8_TABLE_ECMA: [Table;<span class="number">8</span>] =  slicing8::make_table(Table::from_poly(ECMA));

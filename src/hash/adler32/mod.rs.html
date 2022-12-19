@@ -150,7 +150,7 @@
 <span class="kw">use crate</span>::{Hash, Hash32};
 
 <span class="doccomment">/// The size of an Adler-32 checksum in bytes.
-</span><span class="kw">pub const </span>SIZE: isize = <span class="number">4</span>;
+</span><span class="kw">pub const </span>SIZE: usize = <span class="number">4</span>;
 
 <span class="doccomment">/// MODULO is the largest prime that is less than 65536.
 </span><span class="kw">const </span>MODULO: u32 = <span class="number">65521</span>;
@@ -199,7 +199,7 @@
         <span class="self">self</span>.<span class="number">0 </span>= <span class="number">1</span>;
     }
 
-    <span class="kw">fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; isize {
+    <span class="kw">fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
         <span class="kw">crate</span>::adler32::SIZE
     }
 
