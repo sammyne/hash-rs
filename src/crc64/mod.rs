@@ -14,7 +14,7 @@ pub const ECMA: u64 = 0xC96C5795D7870F42;
 pub const ISO: u64 = 0xD800000000000000;
 
 /// The size of a CRC-64 checksum in bytes.
-pub const SIZE: isize = 8;
+pub const SIZE: usize = 8;
 
 lazy_static::lazy_static! {
     static ref SLICING8_TABLE_ECMA: [Table;8] =  slicing8::make_table(Table::from_poly(ECMA));

@@ -23,7 +23,7 @@ pub const IEEE: u32 = 0xedb88320;
 pub const KOOPMAN: u32 = 0xeb31d82e;
 
 /// The size of a CRC-32 checksum in bytes.
-pub const SIZE: isize = 4;
+pub const SIZE: usize = 4;
 
 lazy_static::lazy_static! {
 

@@ -16,7 +16,7 @@ pub trait Hash: Write {
     fn reset(&mut self);
 
     /// size returns the number of bytes Sum will return.
-    fn size(&self) -> isize;
+    fn size(&self) -> usize;
 
     /// block_size returns the hash's underlying block size.
     /// The write method must be able to accept any amount
