@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["make_seed","make_seed returns a new random seed."]],"struct":[["Hash","A Hash computes a seeded hash of a byte sequence."],["Seed","A Seed is a random value that selects the specific hash function computed by a [Hash][struct@Hash]."]]};
