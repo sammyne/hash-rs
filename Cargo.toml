@@ -6,6 +6,10 @@ rust-version = "1.65.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[[bench]]
+name = "adler32kb"
+harness = false
+
 [dependencies]
 lazy_static = "1.4.0"
 
@@ -14,6 +18,7 @@ optional = true
 version = "0.2.8"
 
 [dev-dependencies]
+criterion = "0.4.0"
 getrandom = "0.2.8"
 rand = "0.8.5"
 
