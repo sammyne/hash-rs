@@ -90,13 +90,13 @@ pub fn make_table(poly: u32) -> Table {
 
 /// new creates a new [`Hash32`](crate::Hash32) computing the CRC-32 checksum using the polynomial represented by the Table. Its
 /// [`sum`](crate::Hash::sum) method will lay the value out in big-endian byte order.
-pub fn new(t: Table) -> Box<dyn crate::Hash32> {
-    Box::new(Digest::new(0, t))
+pub fn new(t: Table) -> impl crate::Hash32 {
+    Digest::new(0, t)
 }
 
 /// new_ieee creates a new [`Hash32`](crate::Hash32) computing the CRC-32 checksum using the IEEE polynomial. Its
 /// [`sum`](crate::Hash::sum) method will lay the value out in big-endian byte order.
-pub fn new_ieee() -> Box<dyn crate::Hash32> {
+pub fn new_ieee() -> impl crate::Hash32 {
     new(*IEEE_TABLE)
 }
 

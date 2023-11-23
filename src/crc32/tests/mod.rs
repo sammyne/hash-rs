@@ -1,3 +1,7 @@
+use std::io::Write;
+
+use crate::Hash32;
+
 use super::*;
 
 #[test]

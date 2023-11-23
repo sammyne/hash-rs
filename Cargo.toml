@@ -10,6 +10,10 @@ rust-version = "1.65.0"
 name = "adler32kb"
 harness = false
 
+[[bench]]
+name = "crc32"
+harness = false
+
 [dependencies]
 lazy_static = "1.4.0"
 
