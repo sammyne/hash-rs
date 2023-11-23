@@ -16,6 +16,12 @@ Supported hashes go as follow
 - [x] [fnv][fnv-doc-page]
 - [ ] [maphash][maphash-doc-page]
 
+## Benchmark
+
+```bash
+cargo bench
+```
+
 ## Reference
 
 - [Go's hash package](https://pkg.go.dev/hash)
